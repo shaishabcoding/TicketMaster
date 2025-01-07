@@ -24,7 +24,17 @@ const updateBus: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const deleteBus: RequestHandler = catchAsync(async ({ params }, res) => {
+  await BusService.deleteBus(params.id);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    message: "Bus deleted successfully!",
+  });
+});
+
 export const BusController = {
   createBus,
   updateBus,
+  deleteBus,
 };

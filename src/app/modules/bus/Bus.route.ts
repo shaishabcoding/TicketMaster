@@ -23,6 +23,6 @@ router.put(
 );
 
 /** delete bus by :id */
-router.delete("/:id", auth());
+router.delete("/:id", auth(), BusController.deleteBus);
 
 export const BusRoutes = router;
