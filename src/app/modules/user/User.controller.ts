@@ -7,21 +7,11 @@ import { TUser } from "./User.interface";
 import { AuthServices } from "../auth/Auth.service";
 import config from "../../config";
 
-const createUser: RequestHandler = catchAsync(async (req, res) => {
-  const { firstName, lastName, gender, email, password, avatar } = req.body;
-
-  const userData: Partial<TUser> = {
-    name: { firstName, lastName },
-    gender,
-    email,
-    avatar,
-    password,
-  };
-
-  await UserServices.createUser(userData);
+const createUser: RequestHandler = catchAsync(async ({ body }, res) => {
+  await UserServices.createUser(body);
   const { accessToken, refreshToken, user } = await AuthServices.loginUser({
-    email,
-    password,
+    email: body.email,
+    password: body.password,
   });
 
   res.cookie("refreshToken", refreshToken, {

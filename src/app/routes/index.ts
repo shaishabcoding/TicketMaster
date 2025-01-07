@@ -3,6 +3,7 @@ import { AuthRoutes } from "../modules/auth/Auth.route";
 import { BusRoutes } from "../modules/bus/Bus.route";
 import { auth } from "../middlewares/auth";
 import { BusController } from "../modules/bus/Bus.controller";
+import { TicketRoutes } from "../modules/ticket/Ticket.route";
 
 const router = express.Router();
 
@@ -14,6 +15,10 @@ const moduleRoutes = [
   {
     path: "/admin/bus",
     route: BusRoutes,
+  },
+  {
+    path: "/admin/ticket",
+    route: TicketRoutes,
   },
 ];
 

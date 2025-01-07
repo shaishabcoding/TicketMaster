@@ -4,8 +4,8 @@ import { BusService } from "./Bus.service";
 import sendResponse from "../../utils/sendResponse";
 import { StatusCodes } from "http-status-codes";
 
-const getAllBuses: RequestHandler = catchAsync(async (req, res) => {
-  const busesWithMeta = await BusService.getAllBuses(req.query);
+const getAllBuses: RequestHandler = catchAsync(async ({ query }, res) => {
+  const busesWithMeta = await BusService.getAllBuses(query);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     message: "Buses are retrieved successfully!",
@@ -13,8 +13,8 @@ const getAllBuses: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-const createBus: RequestHandler = catchAsync(async (req, res) => {
-  const newBus = await BusService.createBus(req.body);
+const createBus: RequestHandler = catchAsync(async ({ body }, res) => {
+  const newBus = await BusService.createBus(body);
 
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,
