@@ -15,7 +15,12 @@ router.post(
 );
 
 /** update bus by :id */
-router.put("/:id", auth());
+router.put(
+  "/:id",
+  auth(),
+  validateRequest(BusValidation.busUpdateValidationSchema),
+  BusController.updateBus
+);
 
 /** delete bus by :id */
 router.delete("/:id", auth());

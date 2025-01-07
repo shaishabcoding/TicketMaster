@@ -14,6 +14,17 @@ const createBus: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const updateBus: RequestHandler = catchAsync(async (req, res) => {
+  const updatedBus = await BusService.updateBus(req);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    message: "Bus updated successfully!",
+    data: updatedBus,
+  });
+});
+
 export const BusController = {
   createBus,
+  updateBus,
 };
