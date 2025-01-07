@@ -45,19 +45,7 @@ const getAllUser: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-const getSingleUser: RequestHandler = catchAsync(async (req, res) => {
-  const { email } = req.params;
-
-  const users = await UserServices.getSingleUser(email);
-  sendResponse(res, {
-    statusCode: StatusCodes.OK,
-    message: "User is retrieved successfully!",
-    data: users,
-  });
-});
-
 export const UserControllers = {
   createUser,
   getAllUser,
-  getSingleUser,
 };

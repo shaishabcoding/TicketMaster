@@ -31,26 +31,18 @@ const loginUser = async ({ email, password }: TLoginUser) => {
   }
 
   const {
-    dateOfBirth,
     gender,
     name: { firstName, lastName },
     role,
-    bloodGroup,
     avatar,
-    address,
-    badge,
   } = user.toJSON();
 
   const partialUser: Partial<TUser> = {
     email,
-    dateOfBirth,
     gender,
     name: { firstName, lastName },
     role,
-    bloodGroup,
     avatar,
-    address,
-    badge,
   };
 
   const jwtPayload = {
@@ -112,7 +104,6 @@ const changePassword = async (
 
   newPassword = await bcrypt.hash(newPassword, config.bcrypt_salt_rounds);
 
-  console.log(newPassword);
   await User.updateOne(
     {
       email: user.email,
