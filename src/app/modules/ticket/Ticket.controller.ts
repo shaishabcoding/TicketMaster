@@ -35,8 +35,18 @@ const deleteTicket: RequestHandler = catchAsync(async ({ params }, res) => {
   });
 });
 
+const purchaseTicket: RequestHandler = catchAsync(async (req, res) => {
+  await TicketService.purchaseTicket(req);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    message: "Ticket purchased successfully!",
+  });
+});
+
 export const TicketController = {
   createTicket,
   deleteTicket,
   updateTicket,
+  purchaseTicket,
 };

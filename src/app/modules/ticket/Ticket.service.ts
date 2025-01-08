@@ -26,8 +26,23 @@ const deleteTicket = async (id: string) => {
     throw new AppError(StatusCodes.NOT_FOUND, "Ticket not found");
 };
 
+const purchaseTicket = async ({ body: { ticketId }, user }: Request) => {
+  const ticket = await Ticket.findById(ticketId);
+
+  if (!ticket)
+    throw new AppError(StatusCodes.NOT_FOUND, "Ticket does not found");
+
+  if (ticket.status === "booked")
+    throw new AppError(StatusCodes.BAD_REQUEST, "Ticket already booked");
+
+  ticket.status = "booked";
+  ticket.user = user._id;
+  await ticket.save();
+};
+
 export const TicketService = {
   createTicket,
   deleteTicket,
   updateTicket,
+  purchaseTicket,
 };
