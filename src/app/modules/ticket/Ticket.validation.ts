@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { Bus } from "../bus/Bus.model";
+import { Ticket } from "./Ticket.model";
 
 export const createTicketValidationSchema = z.object({
   body: z.object({
@@ -7,7 +8,7 @@ export const createTicketValidationSchema = z.object({
       .string()
       .nonempty({ message: "Bus ID is required" })
       .refine(async (busId) => !busId || (await Bus.findById(busId)), {
-        message: "Bus ID does not exist",
+        message: "Bus does not exist",
       }),
     price: z.number().positive({ message: "Price must be a positive number" }),
     seatNumber: z
@@ -31,7 +32,7 @@ export const updateTicketValidationSchema = z.object({
       .string()
       .optional()
       .refine(async (busId) => !busId || (await Bus.findById(busId)), {
-        message: "Bus ID does not exist",
+        message: "Bus does not exist",
       }),
     price: z
       .number()
@@ -57,7 +58,22 @@ export const updateTicketValidationSchema = z.object({
   }),
 });
 
+export const purchaseTicketValidationSchema = z.object({
+  body: z.object({
+    ticketId: z
+      .string()
+      .nonempty({ message: "Ticket ID is required" })
+      .refine(
+        async (ticketId) => !ticketId || (await Ticket.findById(ticketId)),
+        {
+          message: "Ticket does not exist",
+        }
+      ),
+  }),
+});
+
 export const TicketValidation = {
   createTicketValidationSchema,
   updateTicketValidationSchema,
+  purchaseTicketValidationSchema,
 };
