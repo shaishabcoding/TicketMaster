@@ -6,11 +6,15 @@ import { TicketController } from "./Ticket.controller";
 
 const router = express.Router();
 
+/** create ticket */
 router.post(
   "/",
   auth(),
   validateRequest(TicketValidation.createTicketValidationSchema),
   TicketController.createTicket
 );
+
+/** delete ticket by :id */
+router.delete("/:id", auth(), TicketController.deleteTicket);
 
 export const TicketRoutes = router;

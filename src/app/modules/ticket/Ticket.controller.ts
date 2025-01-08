@@ -16,6 +16,16 @@ const createTicket: RequestHandler = catchAsync(async ({ body }, res) => {
   });
 });
 
+const deleteTicket: RequestHandler = catchAsync(async ({ params }, res) => {
+  await TicketService.deleteTicket(params.id);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    message: "Ticket deleted successfully!",
+  });
+});
+
 export const TicketController = {
   createTicket,
+  deleteTicket,
 };
