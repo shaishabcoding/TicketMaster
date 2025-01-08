@@ -20,13 +20,8 @@ const getAllUser = async (query: QueryParams) => {
     users,
   };
 };
-const getSingleUser = async (email: string) =>
-  await User.findOne({
-    email,
-  });
 
 export const UserServices = {
   createUser,
   getAllUser,
-  getSingleUser,
 };

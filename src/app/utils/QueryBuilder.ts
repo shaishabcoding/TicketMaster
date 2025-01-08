@@ -36,7 +36,11 @@ class QueryBuilder<T> {
     const { searchTerm } = this.query;
 
     if (searchTerm) {
-      const searchRegex = new RegExp(searchTerm, "i");
+      // Replace '+' with space to handle URL-encoded search terms
+      const normalizedSearchTerm = searchTerm.toString().replace(/\+/g, " ");
+
+      const searchRegex = new RegExp(normalizedSearchTerm, "i");
+
       this.modelQuery = this.modelQuery.find({
         $or: searchableFields.map((field) => ({
           [field]: { $regex: searchRegex },
@@ -52,14 +56,12 @@ class QueryBuilder<T> {
    *
    * @returns The current instance of QueryBuilder with the filter conditions applied.
    */
-  filter() {
-    const excludeFields = new Set([
-      "searchTerm",
-      "sort",
-      "limit",
-      "page",
-      "fields",
-    ]);
+  filter(customExcludeFields: string[] = []) {
+    const excludeFields = new Set(
+      ["searchTerm", "sort", "limit", "page", "fields"].concat(
+        customExcludeFields
+      )
+    );
     const filterQuery = Object.entries(this.query)
       .filter(([key]) => !excludeFields.has(key))
       .reduce((acc, [key, value]) => {
@@ -93,6 +95,17 @@ class QueryBuilder<T> {
     const skip = (page - 1) * limit;
 
     this.modelQuery = this.modelQuery.skip(skip).limit(limit);
+    return this;
+  }
+
+  /**
+   * Adds populate to the query and ensures it works before search.
+   *
+   * @param fields - The fields to populate.
+   * @returns The current instance of QueryBuilder with populate applied.
+   */
+  populate(fields: any) {
+    this.modelQuery = this.modelQuery.populate(fields);
     return this;
   }
 

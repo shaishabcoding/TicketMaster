@@ -1,20 +1,43 @@
 import express from "express";
-import { UserRoutes } from "../modules/user/User.route";
 import { AuthRoutes } from "../modules/auth/Auth.route";
+import { BusRoutes } from "../modules/bus/Bus.route";
+import { auth } from "../middlewares/auth";
+import { BusController } from "../modules/bus/Bus.controller";
+import { TicketRoutes } from "../modules/ticket/Ticket.route";
+import { TicketController } from "../modules/ticket/Ticket.controller";
+import validateRequest from "../middlewares/validateRequest";
+import { TicketValidation } from "../modules/ticket/Ticket.validation";
+import { UserControllers } from "../modules/user/User.controller";
 
 const router = express.Router();
 
 const moduleRoutes = [
   {
-    path: "/user",
-    route: UserRoutes,
-  },
-  {
     path: "/auth",
     route: AuthRoutes,
+  },
+  {
+    path: "/admin/bus",
+    route: BusRoutes,
+  },
+  {
+    path: "/admin/ticket",
+    route: TicketRoutes,
   },
 ];
 
 moduleRoutes.forEach(({ path, route }) => router.use(path, route));
+
+router.get("/buses", auth(["USER"]), BusController.getAllBuses);
+
+router.get("/tickets", auth(["USER"]), TicketController.getAllTicket);
+router.get("/user", UserControllers.getAllUser);
+
+router.post(
+  "/tickets/purchase",
+  auth(["USER"]),
+  validateRequest(TicketValidation.purchaseTicketValidationSchema),
+  TicketController.purchaseTicket
+);
 
 export default router;

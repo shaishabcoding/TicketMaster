@@ -23,6 +23,19 @@ const login: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const logout: RequestHandler = catchAsync(async (_req, res) => {
+  res.cookie("refreshToken", "", {
+    secure: process.env.NODE_ENV !== "development",
+    httpOnly: true,
+    expires: new Date(0), // remove refreshToken
+  });
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    message: "Logged out successfully",
+  });
+});
+
 const changePassword: RequestHandler = catchAsync(async (req, res) => {
   await AuthServices.changePassword(req.user, req.body);
 
@@ -65,6 +78,7 @@ const resetPassword: RequestHandler = catchAsync(async (req, res) => {
 
 export const AuthController = {
   login,
+  logout,
   changePassword,
   forgetPassword,
   resetPassword,

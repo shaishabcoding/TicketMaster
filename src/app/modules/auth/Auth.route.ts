@@ -20,25 +20,22 @@ router.post(
   AuthController.login
 );
 
+router.post("/logout", auth(["USER"]), AuthController.logout);
+
 router.patch(
   "/change-password",
-  auth(["USER", "ADMIN"]),
+  auth(["USER"]),
   validateRequest(AuthValidation.passwordChangeValidationSchema),
   AuthController.changePassword
 );
 
-router.post(
-  "/forget-password",
-  auth(["USER", "ADMIN"]),
-  AuthController.forgetPassword
-);
+router.post("/forget-password", auth(["USER"]), AuthController.forgetPassword);
 
-router.post(
-  "/reset-password",
-  auth(["USER", "ADMIN"]),
-  AuthController.resetPassword
-);
+router.post("/reset-password", auth(["USER"]), AuthController.resetPassword);
 
+/**
+ * generate new access token
+ */
 router.get(
   "/refresh-token",
   validateRequest(AuthValidation.refreshTokenValidationSchema),
