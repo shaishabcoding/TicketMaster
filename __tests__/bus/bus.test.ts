@@ -42,4 +42,18 @@ describe("Bus API", () => {
     expect(status).toBe(200);
     expect(body.success).toBe(true);
   });
+
+  it("should update a specific bus by ID", async () => {
+    const { status, body } = await request(app)
+      .put(`/api/v1/admin/bus/${busId}`)
+      .set("Authorization", token)
+      .send({
+        capacity: 60,
+      });
+
+    expect(status).toBe(200);
+    expect(body.success).toBe(true);
+  });
+
+  /** delete does not work because Transaction does not exist in test mode */
 });
