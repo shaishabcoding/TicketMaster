@@ -29,4 +29,5 @@ const deleteTicket = async (id: string) => {
 export const TicketService = {
   createTicket,
   deleteTicket,
+  updateTicket,
 };

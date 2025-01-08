@@ -16,6 +16,16 @@ const createTicket: RequestHandler = catchAsync(async ({ body }, res) => {
   });
 });
 
+const updateTicket: RequestHandler = catchAsync(async (req, res) => {
+  const updatedTicket = await TicketService.updateTicket(req);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    message: "Ticket updated successfully!",
+    data: updatedTicket,
+  });
+});
+
 const deleteTicket: RequestHandler = catchAsync(async ({ params }, res) => {
   await TicketService.deleteTicket(params.id);
 
@@ -28,4 +38,5 @@ const deleteTicket: RequestHandler = catchAsync(async ({ params }, res) => {
 export const TicketController = {
   createTicket,
   deleteTicket,
+  updateTicket,
 };

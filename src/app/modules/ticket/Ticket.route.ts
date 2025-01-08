@@ -14,6 +14,14 @@ router.post(
   TicketController.createTicket
 );
 
+/** update ticket by :id */
+router.put(
+  "/:id",
+  auth(),
+  validateRequest(TicketValidation.updateTicketValidationSchema),
+  TicketController.updateTicket
+);
+
 /** delete ticket by :id */
 router.delete("/:id", auth(), TicketController.deleteTicket);
 
