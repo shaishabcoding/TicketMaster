@@ -7,6 +7,7 @@ import QueryBuilder, { QueryParams } from "../../utils/QueryBuilder";
 import { Types } from "mongoose";
 import { ticketExcludeFields } from "./Ticket.constant";
 import { busSearchableFields } from "../bus/Bus.constant";
+import { Bus } from "../bus/Bus.model";
 
 const getAllTicket = async (query: QueryParams) => {
   const searchRegex = new RegExp(query.searchTerm!, "i");
@@ -62,8 +63,21 @@ const getAllTicket = async (query: QueryParams) => {
   };
 };
 
-const createTicket = async (newTicket: TTicket) =>
-  await Ticket.create(newTicket);
+/** check bus capacity to create a new Ticket */
+const createTicket = async (newTicket: TTicket) => {
+  const bus = await Bus.findById(newTicket.bus);
+
+  if (!bus) throw new AppError(StatusCodes.NOT_FOUND, "Bus not found");
+
+  const totalTicketsCount = await Ticket.countDocuments({
+    bus: newTicket.bus,
+  });
+
+  if (totalTicketsCount >= bus.capacity)
+    throw new AppError(StatusCodes.BAD_REQUEST, "Bus capacity exceeded");
+
+  return await Ticket.create(newTicket);
+};
 
 const updateTicket = async ({ params, body }: Request) => {
   const updatedTicket = await Ticket.findByIdAndUpdate(params.id, body, {
