@@ -5,6 +5,8 @@ import AppError from "../../errors/AppError";
 import { StatusCodes } from "http-status-codes";
 import QueryBuilder, { QueryParams } from "../../utils/QueryBuilder";
 import { busSearchableFields } from "./Bus.constant";
+import { Ticket } from "../ticket/Ticket.model";
+import { startSession } from "mongoose";
 
 const getAllBuses = async (query: QueryParams) => {
   const busQuery = new QueryBuilder(Bus.find(), query)
@@ -36,10 +38,28 @@ const updateBus = async ({ params, body }: Request) => {
   return updatedBus;
 };
 
+/** deleteBus should delete ticket.bus ref */
 const deleteBus = async (id: string) => {
-  const deletedBus = await Bus.findByIdAndDelete(id);
+  const session = await startSession();
 
-  if (!deletedBus) throw new AppError(StatusCodes.NOT_FOUND, "Bus not found");
+  try {
+    session.startTransaction();
+
+    const deletedBus = await Bus.findByIdAndDelete(id, { session });
+
+    if (!deletedBus) {
+      throw new AppError(StatusCodes.NOT_FOUND, "Bus not found");
+    }
+
+    await Ticket.deleteMany({ bus: id }, { session });
+
+    await session.commitTransaction();
+  } catch (error) {
+    await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
+  }
 };
 
 export const BusService = {
