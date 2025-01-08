@@ -23,6 +23,7 @@ TicketMaster is a backend application designed to manage ticketing systems effic
 ## Project Structure
 
 ```plaintext
+├── __test__/            # Test files
 src/
 ├── app.ts               # Application entry point
 ├── server.ts            # Server configuration
@@ -83,6 +84,10 @@ src/
 - **Run Production Build:**
   ```bash
   pnpm start
+  ```
+- **Run Test:**
+  ```bash
+  pnpm test
   ```
 
 ---
