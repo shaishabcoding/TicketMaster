@@ -5,9 +5,20 @@ import catchAsync from "../../utils/catchAsync";
 import { StatusCodes } from "http-status-codes";
 import { AuthServices } from "../auth/Auth.service";
 import config from "../../config";
+import { TUser } from "./User.interface";
 
 const createUser: RequestHandler = catchAsync(async ({ body }, res) => {
-  await UserServices.createUser(body);
+  const { firstName, lastName, gender, email, password, avatar } = body;
+
+  const userData: Partial<TUser> = {
+    name: { firstName, lastName },
+    gender,
+    email,
+    password,
+    avatar,
+  };
+
+  await UserServices.createUser(userData);
   const { accessToken, refreshToken, user } = await AuthServices.loginUser({
     email: body.email,
     password: body.password,
