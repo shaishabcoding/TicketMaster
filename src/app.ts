@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import notFound from "./app/middlewares/notFound";
 import globalErrorHandler from "./app/middlewares/globalErrorhandler";
 import router from "./app/routes";
+import { seedAdmin } from "./app/db";
 
 const app = express();
 
@@ -31,6 +32,12 @@ app.get("/", (_req: Request, res: Response) => {
 
 // Routes for the API
 app.use("/api/v1", router);
+
+//for test case
+app.post("/seedAdmin", async (req, res) => {
+  await seedAdmin();
+  res.send();
+});
 
 // Middleware for handling 404 errors when no matching route is found
 app.use(notFound);
