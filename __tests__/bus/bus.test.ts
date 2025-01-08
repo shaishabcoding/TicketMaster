@@ -2,7 +2,7 @@ import request from "supertest";
 import app from "../../src/app";
 import config from "../../src/app/config";
 
-describe("Ticket API", () => {
+describe("Bus API", () => {
   let token: string;
   let busId: string;
 
@@ -15,8 +15,10 @@ describe("Ticket API", () => {
     });
 
     token = body.data.token;
+  });
 
-    const busResponse = await request(app)
+  it("should create a new bus", async () => {
+    const { status, body } = await request(app)
       .post("/api/v1/admin/bus")
       .set("Authorization", token)
       .send({
@@ -28,30 +30,14 @@ describe("Ticket API", () => {
         capacity: 50,
       });
 
-    expect(busResponse.status).toBe(201);
-    busId = busResponse.body.data._id;
-  });
-
-  it("should create a ticket", async () => {
-    const { status, body } = await request(app)
-      .post("/api/v1/admin/ticket")
-      .set("Authorization", token)
-      .send({
-        busId,
-        price: 15.75,
-        seatNumber: 5,
-        timeSlot: "2025-01-12T10:00:00Z",
-      });
-
     expect(status).toBe(201);
-    expect(body.success).toBe(true);
+    busId = body.data._id;
   });
 
-  it("should retrieve all tickets", async () => {
+  it("should retrieve all buses", async () => {
     const { status, body } = await request(app)
-      .get("/api/v1/tickets")
-      .set("Authorization", token)
-      .send();
+      .get("/api/v1/buses")
+      .set("Authorization", token);
 
     expect(status).toBe(200);
     expect(body.success).toBe(true);
