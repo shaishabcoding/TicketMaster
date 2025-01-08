@@ -6,6 +6,7 @@ import { StatusCodes } from "http-status-codes";
 
 const getAllBuses: RequestHandler = catchAsync(async ({ query }, res) => {
   const busesWithMeta = await BusService.getAllBuses(query);
+
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     message: "Buses are retrieved successfully!",

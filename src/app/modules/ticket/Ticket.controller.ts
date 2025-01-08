@@ -4,6 +4,16 @@ import { TicketService } from "./Ticket.service";
 import sendResponse from "../../utils/sendResponse";
 import { StatusCodes } from "http-status-codes";
 
+const getAllTicket: RequestHandler = catchAsync(async ({ query }, res) => {
+  const ticketsWithMeta = await TicketService.getAllTicket(query);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    message: "Tickets are retrieved successfully!",
+    data: ticketsWithMeta,
+  });
+});
+
 const createTicket: RequestHandler = catchAsync(async ({ body }, res) => {
   body.bus = body.busId;
 
@@ -45,6 +55,7 @@ const purchaseTicket: RequestHandler = catchAsync(async (req, res) => {
 });
 
 export const TicketController = {
+  getAllTicket,
   createTicket,
   deleteTicket,
   updateTicket,

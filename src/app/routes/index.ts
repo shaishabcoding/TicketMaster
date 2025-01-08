@@ -7,6 +7,7 @@ import { TicketRoutes } from "../modules/ticket/Ticket.route";
 import { TicketController } from "../modules/ticket/Ticket.controller";
 import validateRequest from "../middlewares/validateRequest";
 import { TicketValidation } from "../modules/ticket/Ticket.validation";
+import { UserControllers } from "../modules/user/User.controller";
 
 const router = express.Router();
 
@@ -28,6 +29,9 @@ const moduleRoutes = [
 moduleRoutes.forEach(({ path, route }) => router.use(path, route));
 
 router.get("/buses", auth(["USER"]), BusController.getAllBuses);
+
+router.get("/tickets", auth(["USER"]), TicketController.getAllTicket);
+router.get("/user", UserControllers.getAllUser);
 
 router.post(
   "/tickets/purchase",

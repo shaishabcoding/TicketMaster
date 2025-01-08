@@ -3,7 +3,6 @@ import { UserServices } from "./User.service";
 import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
 import { StatusCodes } from "http-status-codes";
-import { TUser } from "./User.interface";
 import { AuthServices } from "../auth/Auth.service";
 import config from "../../config";
 
@@ -27,11 +26,11 @@ const createUser: RequestHandler = catchAsync(async ({ body }, res) => {
 });
 
 const getAllUser: RequestHandler = catchAsync(async (req, res) => {
-  const users = await UserServices.getAllUser(req.query);
+  const usersWithMeta = await UserServices.getAllUser(req.query);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     message: "Users are retrieved successfully!",
-    data: users,
+    data: usersWithMeta,
   });
 });
 
