@@ -3,7 +3,7 @@
 TicketMaster is a backend application designed to manage ticketing systems efficiently. The project is modular, scalable, and built with TypeScript and Express.js, focusing on buses, tickets, users, and authentication workflows.
 
 ## Features
- 
+
 - **Bus Management:**  
   Create, update, and manage bus information.
 
@@ -11,6 +11,14 @@ TicketMaster is a backend application designed to manage ticketing systems effic
   Book, update, and validate tickets seamlessly.
 
 ---
+
+## Postman docs
+
+[https://documenter.getpostman.com/view/34549363/2sAYJAfJVT](https://documenter.getpostman.com/view/34549363/2sAYJAfJVT)
+
+## ER Diagram
+
+[![ER Diagram](ER_Diagram.png)](ER_Diagram.png)
 
 ## Project Structure
 
@@ -40,18 +48,20 @@ src/
 ## Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/shaishabcoding/TicketMaster.git
    cd TicketMaster
    ```
 
 2. **Install dependencies:**
+
    ```bash
    pnpm install
    ```
 
 3. **Set up environment variables:**
-   Create a `.env` file in the root directory with the required configuration.
+   Create a `.env` file in the root directory with the required configuration. `.example.env`
 
 4. **Run the application:**
    ```bash
